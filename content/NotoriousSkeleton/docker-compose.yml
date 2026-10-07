@@ -1,0 +1,26 @@
+services:
+  notoriousskeleton.api:
+    image: ${DOCKER_REGISTRY-}notoriousskeletonapi
+    build:
+      context: .
+      dockerfile: 1. Internal API/NotoriousSkeleton.API/Dockerfile
+    ports: 
+    - 8080:8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Release
+      - ASPNETCORE_HTTP_PORTS=8080
+    depends_on:
+    - notoriousskeleton.database
+
+  notoriousskeleton.database: 
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+    - ACCEPT_EULA=Y
+    - MSSQL_SA_PASSWORD=Skeleton@Passw0rd
+    ports:
+    - 1433:1433 
+    volumes:
+    - sqldata:/var/opt/mssql
+
+volumes:
+  sqldata:

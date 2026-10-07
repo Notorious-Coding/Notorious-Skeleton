@@ -1,0 +1,6 @@
+@NotoriousSkeleton.API_HostAddress = http://localhost:5183
+
+GET {{NotoriousSkeleton.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

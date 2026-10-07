@@ -1,0 +1,99 @@
+<Solution>
+  <Folder Name="/1. Internal API/" />
+  <Folder Name="/1. Internal API/1.0 Root/">
+    <Project Path="1. Internal API/NotoriousSkeleton.API/NotoriousSkeleton.API.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.1 Catalog/" />
+  <Folder Name="/1. Internal API/1.1 Catalog/1.1.0 External/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog.Externals/NotoriousSkeleton.Catalog.Externals.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.1 Catalog/1.1.1 API/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog/NotoriousSkeleton.Catalog.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.1 Catalog/1.1.2 Business/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog.Application.DependencyInjection.Microsoft/NotoriousSkeleton.Catalog.Application.DependencyInjection.Microsoft.csproj" />
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog.Application/NotoriousSkeleton.Catalog.Application.csproj" />
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog.Domain/NotoriousSkeleton.Catalog.Domain.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.1 Catalog/1.1.3 Infrastructures/" />
+  <Folder Name="/1. Internal API/1.1 Catalog/1.1.3 Infrastructures/Authentication/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog.Authentication.Auth0.Extensions/NotoriousSkeleton.Catalog.Authentication.Auth0.Extensions.csproj" />
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog.Authentication.Auth0/NotoriousSkeleton.Catalog.Authentication.Auth0.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.1 Catalog/1.1.3 Infrastructures/Persistence/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog.Persistence.EntityFramework.Extensions/NotoriousSkeleton.Catalog.Persistence.EntityFramework.Extensions.csproj" />
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog.Persistence.EntityFramework/NotoriousSkeleton.Catalog.Persistence.EntityFramework.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.1 Catalog/1.1.4 Integration Tests/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog.Integration.Tests/NotoriousSkeleton.Catalog.Integration.Tests.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.1 Catalog/1.1.5 Unit Tests/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Catalog.Unit.Tests/NotoriousSkeleton.Catalog.Unit.Tests.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.2 Ordering/" />
+  <Folder Name="/1. Internal API/1.2 Ordering/1.2.1 API/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering/NotoriousSkeleton.Ordering.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.2 Ordering/1.2.2 Business/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Application.DependencyInjection.Microsoft/NotoriousSkeleton.Ordering.Application.DependencyInjection.Microsoft.csproj" />
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Application/NotoriousSkeleton.Ordering.Application.csproj" />
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Domain/NotoriousSkeleton.Ordering.Domain.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.2 Ordering/1.2.3 Infrastructures/" />
+  <Folder Name="/1. Internal API/1.2 Ordering/1.2.3 Infrastructures/Authentication/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Authentication.Auth0.Extensions/NotoriousSkeleton.Ordering.Authentication.Auth0.Extensions.csproj" />
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Authentication.Auth0/NotoriousSkeleton.Ordering.Authentication.Auth0.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.2 Ordering/1.2.3 Infrastructures/Client/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Client.Catalog.Extensions/NotoriousSkeleton.Ordering.Client.Catalog.Extensions.csproj" />
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Client.Catalog/NotoriousSkeleton.Ordering.Client.Catalog.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.2 Ordering/1.2.3 Infrastructures/Persistence/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Persistence.EntityFramework.Extensions/NotoriousSkeleton.Ordering.Persistence.EntityFramework.Extensions.csproj" />
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Persistence.EntityFramework/NotoriousSkeleton.Ordering.Persistence.EntityFramework.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.2 Ordering/1.2.4 Integration Tests/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Integration.Tests/NotoriousSkeleton.Ordering.Integration.Tests.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.2 Ordering/1.2.5 Unit Tests/">
+    <Project Path="1. Internal API/NotoriousSkeleton.Ordering.Unit.Tests/NotoriousSkeleton.Ordering.Unit.Tests.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.3 Shared Kernel/">
+    <Project Path="1. Internal API/NotoriousSkeleton.SharedKernel.Unit.Tests/NotoriousSkeleton.SharedKernel.Unit.Tests.csproj" />
+    <Project Path="1. Internal API/NotoriousSkeleton.SharedKernel/NotoriousSkeleton.SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/1. Internal API/1.4 CICD/">
+    <File Path=".github/workflows/internal-api-deployment.yml" />
+    <File Path="1. Internal API/.env.internal-api" />
+    <File Path="1. Internal API/docker-compose.api.yml" />
+    <File Path="1. Internal API/entrypoint.sh" />
+    <File Path="1. Internal API/migrations.sql" />
+  </Folder>
+  <Folder Name="/2. Front/" />
+  <Folder Name="/2. Front/2.1 App/">
+    <Project Path="2. Front/notoriousskeleton.front/notoriousskeleton.front.esproj">
+      <Build />
+      <Deploy />
+    </Project>
+  </Folder>
+  <Folder Name="/3. Libraries/">
+    <Project Path="3. Libraries/NotoriousSkeleton.Libraries.Authentication/NotoriousSkeleton.Libraries.Authentication.csproj" />
+    <Project Path="3. Libraries/NotoriousSkeleton.Libraries.Configuration/NotoriousSkeleton.Libraries.Configuration.csproj" />
+    <Project Path="3. Libraries/NotoriousSkeleton.Libraries.Domain.Tools/NotoriousSkeleton.Libraries.Domain.Tools.csproj" />
+    <Project Path="3. Libraries/NotoriousSkeleton.Libraries.Enumeration/NotoriousSkeleton.Libraries.Enumeration.csproj" />
+    <Project Path="3. Libraries/NotoriousSkeleton.Libraries.Repositories/NotoriousSkeleton.Libraries.Repositories.csproj" />
+    <Project Path="3. Libraries/NotoriousSkeleton.Libraries.Result/NotoriousSkeleton.Libraries.Result.csproj" />
+  </Folder>
+  <Folder Name="/4. Dependencies/">
+    <File Path="Directory.Packages.props" />
+  </Folder>
+  <Folder Name="/5. Scripts/">
+    <File Path="5. Scripts/Add-ModuleMigration.ps1" />
+    <File Path="5. Scripts/Create-SQLMigrationsFile.ps1" />
+    <File Path="5. Scripts/Modules.ps1" />
+    <File Path="5. Scripts/Update-Database.ps1" />
+  </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+</Solution>

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\NotoriousSkeleton.Catalog.Domain\NotoriousSkeleton.Catalog.Domain.csproj" />
+		<ProjectReference Include="..\NotoriousSkeleton.Catalog.Persistence.EntityFramework\NotoriousSkeleton.Catalog.Persistence.EntityFramework.csproj" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,61 @@
+name: PreRelease Workflow
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  publish:
+    env:
+      CONFIGURATION: 'Release'
+      DOTNET_VERSION: '10.0'
+      TEMPLATE_CHECK_DIR: '${{ github.workspace }}/../TemplateCheck'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Pack
+      run: dotnet pack NotoriousSkeleton.csproj -c ${{ env.CONFIGURATION }} -o out --version-suffix "beta.${{ github.run_number }}"
+
+    # Validate the package: generate a project from it, then build and test that project.
+    - name: Install template
+      run: dotnet new install out/*.nupkg
+
+    - name: Generate project from template
+      run: dotnet new notoriousskeleton -n TemplateCheck -o "${{ env.TEMPLATE_CHECK_DIR }}"
+
+    - name: Build generated front
+      working-directory: '${{ env.TEMPLATE_CHECK_DIR }}/2. Front/templatecheck.front'
+      run: |
+        npm ci
+        npm run build
+
+    - name: Build generated API
+      working-directory: ${{ env.TEMPLATE_CHECK_DIR }}
+      run: dotnet build "1. Internal API/TemplateCheck.API/TemplateCheck.API.csproj" -c ${{ env.CONFIGURATION }}
+
+    - name: Test generated project
+      working-directory: ${{ env.TEMPLATE_CHECK_DIR }}
+      run: |
+        set -euo pipefail
+
+        for csproj in "1. Internal API"/*/*.Tests.csproj; do
+          echo "Running tests: $csproj"
+          dotnet test --project "$csproj"
+        done
+
+    - name: Push
+      if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+      run: dotnet nuget push out/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate

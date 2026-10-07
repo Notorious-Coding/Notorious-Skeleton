@@ -1,0 +1,7 @@
+{
+  "build": {
+    "version": "$Build__Version",
+    "branch": "$Build__Branch",
+    "commitSha": "$Build__CommitSha"
+  }
+}

@@ -1,0 +1,25 @@
+services:
+  notoriousskeleton.internal-api:
+    image: ghcr.io/${IMAGE_OWNER}/notoriousskeleton-api:${TAG}
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__Catalog
+      - ConnectionStrings__Ordering
+      - ClientCredentialAuthentication__Audience
+      - ClientCredentialAuthentication__Authority
+      - AUTH0_DOMAIN
+      - AUTH0_CLIENT_ID 
+      - CORS_AllowedOrigin
+    volumes:
+      - internal_api_logs:/logs
+    networks:
+      - notoriousskeleton
+
+networks:
+  notoriousskeleton:
+    external: true
+    name: notoriousskeleton
+
+volumes:
+  internal_api_logs:

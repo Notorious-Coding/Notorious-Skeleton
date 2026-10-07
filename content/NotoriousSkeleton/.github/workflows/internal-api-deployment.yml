@@ -1,0 +1,187 @@
+name: Internal API Deployment
+
+on:
+  push:
+    branches:
+      - develop
+    paths:
+      - "1. Internal API/**"
+      - "2. Front/**"
+      - ".github/workflows/internal-api-deployment.yml"
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "1. Internal API/**"
+      - "2. Front/**"
+      - ".github/workflows/internal-api-deployment.yml"
+  workflow_dispatch:
+
+env:
+  PROJECT_PATH: "1. Internal API/NotoriousSkeleton.API/NotoriousSkeleton.API.csproj"
+  DOCKERFILE_PATH: "1. Internal API/NotoriousSkeleton.API/Dockerfile.prod"
+  COMPOSE_FILE_PATH: "1. Internal API/docker-compose.api.yml"
+  ENV_FILE_PATH: "1. Internal API/.env.internal-api"
+  MIGRATIONS_FILE_PATH: "1. Internal API/migrations.sql"
+  COMPOSE_TARGET_DIR: "/opt/notoriousskeleton"
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Login to Githup Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore Front
+        run: npm ci
+        working-directory: '2. Front/notoriousskeleton.front/'
+
+      - name: Build Front
+        run: npm run build
+        working-directory: '2. Front/notoriousskeleton.front/'
+
+      - name: Restore
+        run: dotnet restore "${{ env.PROJECT_PATH }}"
+
+      - name: Build
+        run: dotnet build "${{ env.PROJECT_PATH }}" -c Release --no-restore
+
+      # Unit tests + integration tests (NotoriousTest starts SQL Server containers through the runner's Docker).
+      - name: Test
+        run: |
+          set -euo pipefail
+
+          for csproj in "1. Internal API"/*/*.Tests.csproj; do
+            echo "Running tests: $csproj"
+            dotnet test --project "$csproj"
+          done
+
+  build-image:
+    if: ${{ github.event_name != 'pull_request' }}
+    name: Build & Push Images
+    needs: build
+    outputs:
+      version: ${{ steps.version.outputs.semver }}
+      image: ${{ steps.version.outputs.image }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Githup Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Compute Version
+        id: version
+        shell: bash
+        run: |
+          BASE_VERSION=$(dotnet msbuild "${{ env.PROJECT_PATH }}" -nologo -getProperty:Version)
+
+          if [[ "${GITHUB_REF}" == refs/heads/develop ]]; then
+            SEMVER="${BASE_VERSION}-beta.${GITHUB_RUN_NUMBER}"
+          else
+            SEMVER="${BASE_VERSION}"
+          fi
+
+          echo "semver=${SEMVER}" >> "$GITHUB_OUTPUT"
+          # Image names must be lowercase.
+          echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/notoriousskeleton-api" >> "$GITHUB_OUTPUT"
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ env.DOCKERFILE_PATH }}
+          push: true
+          tags: |
+            ${{ steps.version.outputs.image }}:${{ steps.version.outputs.semver }}
+          build-args: |
+            BUILD_VERSION=${{ steps.version.outputs.semver }}
+            BRANCH_NAME=${{ github.head_ref || github.ref_name }}
+            COMMIT_SHA=${{ github.sha }}
+  DEV:
+    if: ${{ github.event_name != 'pull_request' }}
+    name: DEV
+    runs-on: ubuntu-latest
+    needs: build-image
+    permissions:
+      contents: read
+      packages: write
+    environment: Develop
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy Composes, Env Files and Migrations to Server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER_NAME }}
+          key: ${{ secrets.SERVER_USER_KEY }}
+          source: ${{ env.COMPOSE_FILE_PATH }}, ${{ env.ENV_FILE_PATH }}, ${{ env.MIGRATIONS_FILE_PATH }}
+          target: ${{ env.COMPOSE_TARGET_DIR }}
+          strip_components: 1
+
+      - name: Install 1Password CLI
+        uses: 1password/load-secrets-action@v2
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+      - name: Apply Migrations
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER_NAME }}
+          key: ${{ secrets.SERVER_USER_KEY }}
+          port: 22
+          script: |
+            set -euo pipefail
+            export OP_SERVICE_ACCOUNT_TOKEN=${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+            export SQLCMDPASSWORD=$(op read op://NotoriousSkeleton-Dev/DATABASE_CONFIG/SQLSERVER_ADMIN_PASSWORD)
+            SQLCMD_USER=$(op read op://NotoriousSkeleton-Dev/DATABASE_CONFIG/SQLSERVER_ADMIN_USER)
+            SQLCMD_DATABASE=$(op read op://NotoriousSkeleton-Dev/DATABASE_CONFIG/SQLSERVER_DATABASE)
+
+            sqlcmd -S localhost,1433 -U "$SQLCMD_USER" -d "$SQLCMD_DATABASE" -C -b -i ${{ env.COMPOSE_TARGET_DIR }}/migrations.sql
+
+      - name: Pull ${{ needs.build-image.outputs.image }}
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER_NAME }}
+          key: ${{ secrets.SERVER_USER_KEY }}
+          port: 22
+          script: |
+            set -euo pipefail
+            cd ${{ env.COMPOSE_TARGET_DIR }}
+
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            export IMAGE_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+            export TAG=${{ needs.build-image.outputs.version }}
+            export ENV=Dev
+            export OP_SERVICE_ACCOUNT_TOKEN=${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+            docker compose -f docker-compose.api.yml pull
+            op run --env-file="./.env.internal-api" -- docker compose -f docker-compose.api.yml up -d

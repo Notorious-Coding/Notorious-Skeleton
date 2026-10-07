@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\NotoriousSkeleton.Catalog.Application.DependencyInjection.Microsoft\NotoriousSkeleton.Catalog.Application.DependencyInjection.Microsoft.csproj" />
+	  <ProjectReference Include="..\NotoriousSkeleton.Catalog.Application\NotoriousSkeleton.Catalog.Application.csproj" />
+	  <ProjectReference Include="..\NotoriousSkeleton.Catalog.Authentication.Auth0.Extensions\NotoriousSkeleton.Catalog.Authentication.Auth0.Extensions.csproj" />
+	  <ProjectReference Include="..\NotoriousSkeleton.Catalog.Externals\NotoriousSkeleton.Catalog.Externals.csproj" />
+	  <ProjectReference Include="..\NotoriousSkeleton.Catalog.Persistence.EntityFramework.Extensions\NotoriousSkeleton.Catalog.Persistence.EntityFramework.Extensions.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Asp.Versioning.Mvc" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NotoriousSkeleton.Catalog.Externals\NotoriousSkeleton.Catalog.Externals.csproj" />
+      <ProjectReference Include="..\NotoriousSkeleton.Ordering.Application\NotoriousSkeleton.Ordering.Application.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="NotoriousSkeleton.Ordering.Client.Catalog.Extensions" />
+        <InternalsVisibleTo Include="NotoriousSkeleton.Ordering.Integration.Tests" />
+    </ItemGroup>
+
+</Project>

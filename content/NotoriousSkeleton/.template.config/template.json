@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Brice SCHUMACHER",
+  "classifications": [ "Web", "API", "Modular Monolith", "Clean Architecture", "Docker" ],
+  "identity": "NotoriousSkeleton",
+  "name": "Notorious Skeleton",
+  "description": ".NET 10 modular monolith skeleton (Clean/Onion, CQRS-style features), SQL Server, Serilog, NotoriousTest integration tests, Docker and GitHub Actions CI/CD.",
+  "shortName": "notoriousskeleton",
+  "sourceName": "NotoriousSkeleton",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "symbols": {
+    "lowerCaseName": {
+      "type": "generated",
+      "generator": "casing",
+      "parameters": {
+        "source": "name",
+        "toLower": true
+      },
+      "replaces": "notoriousskeleton",
+      "fileRename": "notoriousskeleton"
+    }
+  },
+  "guids": [
+    "b7d3f0a2-5c1e-4c8f-9a6d-2e4b8f1c7a90",
+    "3c9e5a1f-7b2d-4e8a-9f60-1d4c2b8e7a35"
+  ],
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [
+            ".template.config/**",
+            "**/[Bb]in/**",
+            "**/[Oo]bj/**",
+            "**/node_modules/**",
+            "**/dist/**",
+            "**/.vs/**",
+            "**/TestResults/**",
+            "**/*.user",
+            "**/*.filelist",
+            "**/*.lock.json"
+          ]
+        }
+      ]
+    }
+  ]
+}

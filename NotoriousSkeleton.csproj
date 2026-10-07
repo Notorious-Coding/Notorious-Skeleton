@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Template package for `dotnet new notoriousskeleton`.
+    Package metadata lives here rather than in a Directory.Build.props, because a
+    Directory.Build.props at the repo root would also be imported by the projects
+    under content/ when they are built in place.
+  -->
+  <PropertyGroup>
+    <PackageType>Template</PackageType>
+    <PackageId>NotoriousSkeleton</PackageId>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <Title>Notorious Skeleton</Title>
+    <Authors>Brice SCHUMACHER</Authors>
+    <Description>dotnet new template: .NET 10 modular monolith skeleton (Clean/Onion, CQRS-style features), SQL Server, Serilog, NotoriousTest integration tests, Docker and GitHub Actions CI/CD.</Description>
+    <PackageTags>dotnet-new;templates;modular-monolith;clean-architecture;notorioustest;sqlserver;docker</PackageTags>
+    <RepositoryUrl>https://github.com/Notorious-Coding/Notorious-Skeleton/</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Notorious-Coding/Notorious-Skeleton/</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <!-- Keep dot-files (.template.config, .github, .gitignore, .claude, ...) in the package. -->
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <NoWarn>$(NoWarn);NU5128;NU5110;NU5111</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="content\**\*" Exclude="content\**\bin\**;content\**\obj\**;content\**\node_modules\**;content\**\dist\**;content\**\.vs\**;content\**\TestResults\**;content\**\*.user" Pack="true" PackagePath="content\" />
+    <None Include="icon.png" Pack="true" PackagePath="\" />
+    <None Include="LICENSE.txt" Pack="true" PackagePath="\" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="NotoriousSkeleton.Ordering.Persistence.EntityFramework.Extensions" />
+		<InternalsVisibleTo Include="NotoriousSkeleton.Ordering.Integration.Tests" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\3. Libraries\NotoriousSkeleton.Libraries.Repositories\NotoriousSkeleton.Libraries.Repositories.csproj" />
+	  <ProjectReference Include="..\NotoriousSkeleton.Ordering.Application\NotoriousSkeleton.Ordering.Application.csproj" />
+	  <ProjectReference Include="..\NotoriousSkeleton.Ordering.Domain\NotoriousSkeleton.Ordering.Domain.csproj" />
+	</ItemGroup>
+</Project>

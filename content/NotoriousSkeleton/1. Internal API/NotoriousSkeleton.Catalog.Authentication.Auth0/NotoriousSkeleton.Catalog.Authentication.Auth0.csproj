@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" />
+	</ItemGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="NotoriousSkeleton.Catalog.Authentication.Auth0.Extensions" />
+		<InternalsVisibleTo Include="NotoriousSkeleton.Catalog.Integration.Tests" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\NotoriousSkeleton.Catalog.Application\NotoriousSkeleton.Catalog.Application.csproj" />
+		<ProjectReference Include="..\NotoriousSkeleton.Catalog.Domain\NotoriousSkeleton.Catalog.Domain.csproj" />
+	</ItemGroup>
+</Project>
